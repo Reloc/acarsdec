@@ -168,11 +168,10 @@ static int label_qt(char *txt,oooi_t *oooi)
 }
 static int label_20(char *txt,oooi_t *oooi)
 {
-    if(memcmp(txt,"RST",3))
-		{if(memcmp(txt,"DA",2)) return 0;
-	
-		{memcpy(oooi->sa,&(txt[3]),4); memcpy(oooi->da,&(txt[11]),4); memcpy(oooi->eta,&(txt[20]),4);return 1;}};
-	{memcpy(oooi->sa,&(txt[22]),4); memcpy(oooi->da,&(txt[26]),4);return 1;}
+    if(memcmp(txt,"RST",3)) return 0;
+    memcpy(oooi->sa,&(txt[22]),4);
+    memcpy(oooi->da,&(txt[26]),4);
+    return 1;
 }
 static int label_21(char *txt,oooi_t *oooi)
 {
@@ -244,17 +243,11 @@ static int label_45(char *txt,oooi_t *oooi)
     return 1;
 }
 static int label_10(char *txt,oooi_t *oooi)
-
 {
-    if(memcmp(txt,"ARR01",5)) // Test01
-	
-		{if(memcmp(txt,"MET01",4)) // Test02
-			{if(memcmp(txt,"ETA",3)||(txt[21]!=' ')) return 0; // Test03
-		
-			{memcpy(oooi->sa,&(txt[22]),4);memcpy(oooi->da,&(txt[26]),4);memcpy(oooi->eta,&(txt[32]),4);return 1;}}; // Test03 Result
-		{memcpy(oooi->da,&(txt[5]),4);return 1;}}; // Test02 Result
- 	
-	{memcpy(oooi->da,&(txt[12]),4);	memcpy(oooi->eta,&(txt[16]),4);return 1;} // Test01 Result
+    if(memcmp(txt,"ARR01",5)) return 0;
+    memcpy(oooi->da,&(txt[12]),4);
+    memcpy(oooi->eta,&(txt[16]),4);
+    return 1;
 }
 static int label_11(char *txt,oooi_t *oooi)
 {
@@ -273,12 +266,9 @@ static int label_12(char *txt,oooi_t *oooi)
 }
 static int label_15(char *txt,oooi_t *oooi)
 {
-    char *p;
     if(memcmp(txt,"FST01",5)) return 0;
     memcpy(oooi->sa,&(txt[5]),4);
     memcpy(oooi->da,&(txt[9]),4);
-	p= strchr(txt,'\0')-8 ; if(p==NULL) return 0; //search for end and go back 8 step.
-	memcpy(oooi->eta,p,4);
     return 1;
 }
 static int label_17(char *txt,oooi_t *oooi)
@@ -300,18 +290,9 @@ static int label_1G(char *txt,oooi_t *oooi)
 }
 static int label_80(char *txt,oooi_t *oooi)
 {
-if(memcmp(&(txt[6]),"/DEST/",5))
-        {if(memcmp(&(txt[38]),"/ETA",4))
-                {if(memcmp(&(txt[24]),"/",1))
-                        {if(memcmp(&(txt[23]),"/",1))
-                                {if(memcmp(&(txt[25]),"/",1))
-                                        {if(memcmp(&(txt[35]),"/ETA",4)) return 0;
-                                        {memcpy(oooi->sa,&(txt[17]),4);memcpy(oooi->da,&(txt[21]),4);memcpy(oooi->eta,&(txt[40]),4);return 1;}};
-                                {memcpy(oooi->sa,&(txt[21]),4);memcpy(oooi->da,&(txt[26]),4);return 1;}};
-                        {memcpy(oooi->sa,&(txt[19]),4);memcpy(oooi->da,&(txt[24]),4);return 1;}};
-                {memcpy(oooi->sa,&(txt[20]),4);memcpy(oooi->da,&(txt[25]),4);return 1;}};
-        {memcpy(oooi->sa,&(txt[20]),4);memcpy(oooi->da,&(txt[25]),4);memcpy(oooi->eta,&(txt[43]),4);return 1;}};
-   {memcpy(oooi->da,&(txt[12]),4);return 1;}
+    if(memcmp(&(txt[6]),"/DEST/",5)) return 0;
+    memcpy(oooi->da,&(txt[12]),4);
+    return 1;
 }
 static int label_83(char *txt,oooi_t *oooi)
 {
@@ -349,12 +330,7 @@ static int label_b9(char *txt,oooi_t *oooi)
     memcpy(oooi->da,&(txt[1]),4);
     return 1;
 }
-static int label_H1(char *txt,oooi_t *oooi)
-{
-    if(memcmp(txt,"#M1BPRG/DT",10)) return 0;
-    memcpy(oooi->da,&(txt[10]),4);
-    return 1;
-}
+
 
 int DecodeLabel(acarsmsg_t *msg,oooi_t *oooi)
 {
@@ -417,10 +393,6 @@ int DecodeLabel(acarsmsg_t *msg,oooi_t *oooi)
 		if(msg->label[1]=='9') 
 			ov=label_b9(msg->txt,oooi);
 		break;
-	case 'H' :
-		if(msg->label[1]=='1') 
-			ov=label_H1(msg->txt,oooi);
-		break;	
 	case 'R' :
 		if(msg->label[1]=='B') 
 			ov=label_26(msg->txt,oooi);
